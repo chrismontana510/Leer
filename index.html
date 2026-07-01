@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Uhren-Spielplatz Klasse 1</title>
+  <style>
+    :root{
+      --bg1:#fff7df;
+      --bg2:#eaf8ff;
+      --card:#ffffffcc;
+      --ink:#243047;
+      --muted:#5f6c80;
+      --minute:#256bd8;
+      --hour:#d43d44;
+      --green:#2f9b53;
+      --purple:#7c3fc7;
+      --yellow:#f5b51b;
+      --ring:#f0c043;
+      --dot:#3fb76b;
+      --shadow:0 22px 60px rgba(31,45,71,.18);
+      --radius:32px;
+    }
+
+    *{box-sizing:border-box}
+
+    html,body{height:100%}
+
+    body{
+      margin:0;
+      font-family: ui-rounded, "Avenir Next", "Nunito", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 12% 15%, #fff2b6 0 16%, transparent 17%),
+        radial-gradient(circle at 86% 8%, #d8f2ff 0 18%, transparent 19%),
+        linear-gradient(135deg,var(--bg1),var(--bg2));
+      overflow-x:hidden;
+    }
+
+    main{
+      min-height:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:18px;
+      padding:24px;
+    }
+
+    .app{
+      width:min(1120px,100%);
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.7);
+      box-shadow:var(--shadow);
+      border-radius:var(--radius);
+      padding:clamp(18px,3vw,32px);
+      backdrop-filter:blur(14px);
+    }
+
+    header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .title-wrap{max-width:720px}
+
+    h1{
+      margin:0;
+      font-size:clamp(30px,5vw,56px);
+      letter-spacing:-.04em;
+      line-height:.95;
+    }
+
+    .subtitle{
+      margin:10px 0 0;
+      color:var(--muted);
+      font-size:clamp(16px,2vw,21px);
+      line-height:1.35;
+    }
+
+    .fullscreen{
+      white-space:nowrap;
+      border:none;
+      border-radius:999px;
+      background:#fff;
+      color:var(--ink);
+      padding:12px 18px;
+      font-weight:800;
+      font-size:16px;
+      box-shadow:0 10px 22px rgba(31,45,71,.12);
+      cursor:pointer;
+    }
+
+    .stage{
+      display:grid;
+      grid-template-columns:minmax(360px,1fr) minmax(270px,360px);
+      align-items:center;
+      gap:clamp(18px,4vw,42px);
+    }
+
+    .clock-card{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:10px;
+      min-height:420px;
+    }
+
+    #clock{
+      width:min(72vh,100%);
+      max-width:620px;
+      min-width:330px;
+      height:auto;
+      touch-action:none;
+      user-select:none;
+      filter:drop-shadow(0 18px 26px rgba(36,48,71,.12));
+    }
+
+    .clock-face{fill:#fffceb;stroke:var(--ring);stroke-width:10}
+    .minute-dot{fill:var(--dot)}
+    .hour-number{
+      font-size:29px;
+      font-weight:900;
+      fill:#6a35bf;
+      dominant-baseline:middle;
+      text-anchor:middle;
+    }
+    .hand{stroke-linecap:round;cursor:grab;transition:filter .2s ease}
+    .hand:active{cursor:grabbing}
+    .hand.disabled{opacity:.28;cursor:not-allowed}
+    #minuteHand{stroke:var(--minute);stroke-width:13}
+    #hourHand{stroke:var(--hour);stroke-width:14}
+    .grab{cursor:grab;stroke:white;stroke-width:5;filter:drop-shadow(0 4px 8px rgba(0,0,0,.18))}
+    .grab.disabled{opacity:.28;cursor:not-allowed}
+    .center{fill:var(--yellow);stroke:#fff;stroke-width:5}
+
+    .panel{
+      background:#fff;
+      border-radius:30px;
+      padding:22px;
+      box-shadow:0 14px 34px rgba(31,45,71,.12);
+    }
+
+    .digital{
+      min-height:104px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      border-radius:24px;
+      background:linear-gradient(135deg,#8a45d8,#5d2faf);
+      color:#fff;
+      margin-bottom:18px;
+      padding:14px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .digital::before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:radial-gradient(circle,rgba(255,255,255,.2),transparent 42%);
+      transform:translateX(-30%);
+    }
+
+    .digital-content{position:relative;z-index:1}
+
+    .digital-time{
+      font-size:clamp(40px,6vw,64px);
+      line-height:1;
+      letter-spacing:.03em;
+      font-weight:950;
+      font-variant-numeric:tabular-nums;
+    }
+
+    .digital-words{
+      font-size:19px;
+      font-weight:850;
+      opacity:.95;
+      margin-top:8px;
+    }
+
+    .hidden-time .digital-content{filter:blur(9px);opacity:.38}
+    .hidden-time .cover{
+      display:flex;
+    }
+    .cover{
+      display:none;
+      position:absolute;
+      inset:0;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:2;
+      background:linear-gradient(135deg,#8a45d8,#5d2faf);
+      font-size:24px;
+      font-weight:900;
+    }
+
+    .controls{display:grid;gap:12px}
+
+    button,.mode{
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    .big-btn{
+      border:none;
+      border-radius:18px;
+      padding:16px 18px;
+      font-size:19px;
+      font-weight:950;
+      color:#fff;
+      background:var(--green);
+      cursor:pointer;
+      box-shadow:0 10px 18px rgba(47,155,83,.22);
+    }
+
+    .big-btn.secondary{
+      background:#7540bf;
+      box-shadow:0 10px 18px rgba(117,64,191,.18);
+    }
+
+    .big-btn.soft{
+      color:var(--ink);
+      background:#eef5ff;
+      box-shadow:none;
+      border:2px solid #dce9ff;
+    }
+
+    .switches{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    label.switch{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:#f7f8fb;
+      border:2px solid #eceff5;
+      border-radius:18px;
+      padding:12px;
+      font-weight:850;
+      color:var(--ink);
+    }
+
+    input[type="checkbox"]{
+      width:24px;
+      height:24px;
+      accent-color:var(--green);
+      flex:0 0 auto;
+    }
+
+    .legend-dot{
+      width:14px;
+      height:14px;
+      border-radius:99px;
+      display:inline-block;
+    }
+    .legend-dot.hour{background:var(--hour)}
+    .legend-dot.minute{background:var(--minute)}
+
+    .mode-box{
+      margin-top:4px;
+      background:#f8f9fc;
+      border:2px solid #eceff5;
+      border-radius:22px;
+      padding:12px;
+    }
+
+    .mode-title{
+      font-size:15px;
+      font-weight:950;
+      color:var(--muted);
+      margin:0 0 9px;
+    }
+
+    .modes{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+
+    .mode{
+      border:2px solid transparent;
+      border-radius:16px;
+      padding:10px 8px;
+      background:white;
+      color:var(--ink);
+      font-weight:900;
+      cursor:pointer;
+      font-size:15px;
+    }
+
+    .mode.active{
+      background:#fff7d7;
+      border-color:#f0c043;
+    }
+
+    .hint{
+      margin:14px 0 0;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.35;
+    }
+
+    .task-line{
+      margin-top:18px;
+      padding:14px 18px;
+      border-radius:22px;
+      background:#fff8df;
+      border:2px dashed #f0c043;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      font-size:18px;
+      font-weight:900;
+    }
+
+    .task-line span{color:#7a5a00}
+
+    @media (max-width:860px){
+      main{padding:12px}
+      header{flex-direction:column}
+      .stage{grid-template-columns:1fr}
+      .clock-card{min-height:auto}
+      #clock{width:100%;max-width:560px}
+      .panel{padding:16px}
+      .switches,.modes{grid-template-columns:1fr}
+      .fullscreen{align-self:flex-start}
+    }
+
+    @media (max-width:460px){
+      .app{border-radius:22px;padding:14px}
+      #clock{min-width:280px}
+      .hour-number{font-size:25px}
+      .task-line{font-size:16px;align-items:flex-start;flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+<main>
+  <section class="app" aria-label="Interaktive Analoguhr für Klasse 1">
+    <header>
+      <div class="title-wrap">
+        <h1>Uhren-Spielplatz</h1>
+        <p class="subtitle">Schiebe den kleinen roten Stundenzeiger und den großen blauen Minutenzeiger. Die digitale Uhrzeit bleibt versteckt, bis du sie aufdeckst.</p>
+      </div>
+      <button class="fullscreen" id="fullscreenBtn" type="button">⛶ Vollbild</button>
+    </header>
+
+    <div class="stage">
+      <div class="clock-card">
+        <svg id="clock" viewBox="0 0 400 400" role="img" aria-label="Analoge Uhr mit beweglichen Zeigern">
+          <circle class="clock-face" cx="200" cy="200" r="176"></circle>
+          <g id="minuteDots"></g>
+          <g id="numbers"></g>
+          <line id="hourHand" class="hand" x1="200" y1="200" x2="200" y2="115"></line>
+          <line id="minuteHand" class="hand" x1="200" y1="200" x2="200" y2="75"></line>
+          <circle id="hourGrab" class="grab" cx="200" cy="115" r="15" fill="#d43d44"></circle>
+          <circle id="minuteGrab" class="grab" cx="200" cy="75" r="15" fill="#256bd8"></circle>
+          <circle class="center" cx="200" cy="200" r="16"></circle>
+        </svg>
+      </div>
+
+      <aside class="panel">
+        <div id="digitalBox" class="digital hidden-time" aria-live="polite">
+          <div class="cover">digitale Uhrzeit versteckt</div>
+          <div class="digital-content">
+            <div id="digitalTime" class="digital-time">08:00</div>
+            <div id="digitalWords" class="digital-words">8 Uhr</div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="switches" aria-label="Zeiger auswählen">
+            <label class="switch"><input id="hourToggle" type="checkbox" checked><span class="legend-dot hour"></span>Stundenzeiger</label>
+            <label class="switch"><input id="minuteToggle" type="checkbox" checked><span class="legend-dot minute"></span>Minutenzeiger</label>
+          </div>
+
+          <button id="randomBtn" class="big-btn" type="button">🎲 Zufällige Zeit</button>
+          <button id="revealBtn" class="big-btn secondary" type="button">Digitale Zeit aufdecken</button>
+          <button id="resetBtn" class="big-btn soft" type="button">↺ Wieder auf 8 Uhr</button>
+
+          <div class="mode-box">
+            <p class="mode-title">Übungsmodus</p>
+            <div class="modes">
+              <button class="mode active" data-mode="full" type="button">volle Stunden</button>
+              <button class="mode" data-mode="half" type="button">halb & voll</button>
+              <button class="mode" data-mode="five" type="button">5-Minuten</button>
+              <button class="mode" data-mode="free" type="button">frei</button>
+            </div>
+          </div>
+        </div>
+
+        <p class="hint">Tipp: Für Klasse 1 zuerst „volle Stunden“ nutzen. Danach „halb & voll“ einschalten.</p>
+      </aside>
+    </div>
+
+    <div class="task-line">
+      <span>Auftrag: Stelle eine Uhrzeit ein. Partnerkind kontrolliert erst analog, dann digital.</span>
+      <span id="modeInfo">Modus: volle Stunden</span>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  const svg = document.getElementById('clock');
+  const numbers = document.getElementById('numbers');
+  const minuteDots = document.getElementById('minuteDots');
+  const hourHand = document.getElementById('hourHand');
+  const minuteHand = document.getElementById('minuteHand');
+  const hourGrab = document.getElementById('hourGrab');
+  const minuteGrab = document.getElementById('minuteGrab');
+  const digitalBox = document.getElementById('digitalBox');
+  const digitalTime = document.getElementById('digitalTime');
+  const digitalWords = document.getElementById('digitalWords');
+  const revealBtn = document.getElementById('revealBtn');
+  const randomBtn = document.getElementById('randomBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+  const hourToggle = document.getElementById('hourToggle');
+  const minuteToggle = document.getElementById('minuteToggle');
+  const modeButtons = Array.from(document.querySelectorAll('.mode'));
+  const modeInfo = document.getElementById('modeInfo');
+
+  const CENTER = { x: 200, y: 200 };
+  const RAD = Math.PI / 180;
+  const MODES = {
+    full: { label: 'volle Stunden', minuteChoices: [0] },
+    half: { label: 'halb & voll', minuteChoices: [0, 30] },
+    five: { label: '5-Minuten', step: 5 },
+    free: { label: 'frei', step: 1 }
+  };
+
+  let time = { hour: 8, minute: 0 }; // hour: 1 bis 12
+  let mode = 'full';
+  let revealed = false;
+  let dragging = null;
+
+  function polarToPoint(deg, length){
+    const angle = (deg - 90) * RAD;
+    return {
+      x: CENTER.x + Math.cos(angle) * length,
+      y: CENTER.y + Math.sin(angle) * length
+    };
+  }
+
+  function angleFromPoint(evt){
+    const pt = svg.createSVGPoint();
+    pt.x = evt.clientX;
+    pt.y = evt.clientY;
+    const cursor = pt.matrixTransform(svg.getScreenCTM().inverse());
+    const dx = cursor.x - CENTER.x;
+    const dy = cursor.y - CENTER.y;
+    let deg = Math.atan2(dy, dx) / RAD + 90;
+    if (deg < 0) deg += 360;
+    return deg % 360;
+  }
+
+  function nearestFromList(value, list){
+    return list.reduce((best, current) => {
+      const bestDist = Math.min(Math.abs(value - best), 60 - Math.abs(value - best));
+      const currentDist = Math.min(Math.abs(value - current), 60 - Math.abs(value - current));
+      return currentDist < bestDist ? current : best;
+    }, list[0]);
+  }
+
+  function snapMinute(rawMinute){
+    rawMinute = ((rawMinute % 60) + 60) % 60;
+    const cfg = MODES[mode];
+    if (cfg.minuteChoices) return nearestFromList(rawMinute, cfg.minuteChoices);
+    const snapped = Math.round(rawMinute / cfg.step) * cfg.step;
+    return snapped === 60 ? 0 : snapped;
+  }
+
+  function pad2(n){ return String(n).padStart(2,'0'); }
+
+  function timeInWords(){
+    if(time.minute === 0) return `${time.hour} Uhr`;
+    if(time.minute === 30) return `halb ${time.hour === 12 ? 1 : time.hour + 1}`;
+    return `${time.hour} Uhr ${time.minute}`;
+  }
+
+  function updateDigital(){
+    digitalTime.textContent = `${pad2(time.hour)}:${pad2(time.minute)}`;
+    digitalWords.textContent = timeInWords();
+  }
+
+  function setRevealed(value){
+    revealed = value;
+    digitalBox.classList.toggle('hidden-time', !revealed);
+    revealBtn.textContent = revealed ? 'Digitale Zeit verstecken' : 'Digitale Zeit aufdecken';
+  }
+
+  function updateHands(){
+    const minuteDeg = time.minute * 6;
+    const hourDeg = ((time.hour % 12) * 30) + (time.minute * 0.5);
+    const minEnd = polarToPoint(minuteDeg, 128);
+    const hourEnd = polarToPoint(hourDeg, 88);
+
+    minuteHand.setAttribute('x2', minEnd.x);
+    minuteHand.setAttribute('y2', minEnd.y);
+    minuteGrab.setAttribute('cx', minEnd.x);
+    minuteGrab.setAttribute('cy', minEnd.y);
+
+    hourHand.setAttribute('x2', hourEnd.x);
+    hourHand.setAttribute('y2', hourEnd.y);
+    hourGrab.setAttribute('cx', hourEnd.x);
+    hourGrab.setAttribute('cy', hourEnd.y);
+
+    const hourEnabled = hourToggle.checked;
+    const minuteEnabled = minuteToggle.checked;
+    hourHand.classList.toggle('disabled', !hourEnabled);
+    hourGrab.classList.toggle('disabled', !hourEnabled);
+    minuteHand.classList.toggle('disabled', !minuteEnabled);
+    minuteGrab.classList.toggle('disabled', !minuteEnabled);
+  }
+
+  function render(){
+    updateHands();
+    updateDigital();
+  }
+
+  function drawClockFace(){
+    for(let i=0;i<60;i++){
+      const p = polarToPoint(i * 6, i % 5 === 0 ? 159 : 166);
+      const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      dot.setAttribute('cx', p.x);
+      dot.setAttribute('cy', p.y);
+      dot.setAttribute('r', i % 5 === 0 ? 4.8 : 3.2);
+      dot.setAttribute('class','minute-dot');
+      minuteDots.appendChild(dot);
+    }
+
+    for(let n=1;n<=12;n++){
+      const p = polarToPoint(n * 30, 137);
+      const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+      t.setAttribute('x', p.x);
+      t.setAttribute('y', p.y + 2);
+      t.setAttribute('class','hour-number');
+      t.textContent = n;
+      numbers.appendChild(t);
+    }
+  }
+
+  function startDrag(kind, evt){
+    if(kind === 'hour' && !hourToggle.checked) return;
+    if(kind === 'minute' && !minuteToggle.checked) return;
+    dragging = kind;
+    svg.setPointerCapture?.(evt.pointerId);
+    evt.preventDefault();
+  }
+
+  function handleMove(evt){
+    if(!dragging) return;
+    const deg = angleFromPoint(evt);
+
+    if(dragging === 'minute'){
+      const rawMinute = Math.round(deg / 6) % 60;
+      time.minute = snapMinute(rawMinute);
+    }
+
+    if(dragging === 'hour'){
+      let hour = Math.round(deg / 30) % 12;
+      time.hour = hour === 0 ? 12 : hour;
+      if(mode === 'full') time.minute = 0;
+    }
+
+    setRevealed(false);
+    render();
+  }
+
+  function stopDrag(evt){
+    if(!dragging) return;
+    dragging = null;
+    try { svg.releasePointerCapture?.(evt.pointerId); } catch(e) {}
+  }
+
+  function randomTime(){
+    time.hour = Math.floor(Math.random() * 12) + 1;
+    const cfg = MODES[mode];
+    if(cfg.minuteChoices){
+      time.minute = cfg.minuteChoices[Math.floor(Math.random() * cfg.minuteChoices.length)];
+    } else {
+      const steps = 60 / cfg.step;
+      time.minute = Math.floor(Math.random() * steps) * cfg.step;
+    }
+    setRevealed(false);
+    render();
+  }
+
+  function setMode(nextMode){
+    mode = nextMode;
+    time.minute = snapMinute(time.minute);
+    modeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.mode === mode));
+    modeInfo.textContent = `Modus: ${MODES[mode].label}`;
+    setRevealed(false);
+    render();
+  }
+
+  [hourHand, hourGrab].forEach(el => el.addEventListener('pointerdown', evt => startDrag('hour', evt)));
+  [minuteHand, minuteGrab].forEach(el => el.addEventListener('pointerdown', evt => startDrag('minute', evt)));
+  svg.addEventListener('pointermove', handleMove);
+  svg.addEventListener('pointerup', stopDrag);
+  svg.addEventListener('pointercancel', stopDrag);
+  svg.addEventListener('pointerleave', stopDrag);
+
+  hourToggle.addEventListener('change', render);
+  minuteToggle.addEventListener('change', render);
+  randomBtn.addEventListener('click', randomTime);
+  resetBtn.addEventListener('click', () => { time = { hour: 8, minute: 0 }; setRevealed(false); render(); });
+  revealBtn.addEventListener('click', () => setRevealed(!revealed));
+  modeButtons.forEach(btn => btn.addEventListener('click', () => setMode(btn.dataset.mode)));
+
+  fullscreenBtn.addEventListener('click', async () => {
+    const root = document.documentElement;
+    if(!document.fullscreenElement){
+      await root.requestFullscreen?.();
+    }else{
+      await document.exitFullscreen?.();
+    }
+  });
+
+  drawClockFace();
+  setMode('full');
+})();
+</script>
+</body>
+</html>
