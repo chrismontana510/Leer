@@ -1,63 +1,58 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Uhren-Spielplatz Klasse 1</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff8dc">
+  <title>Flämmchens Uhreninsel – Uhrzeit lernen</title>
   <style>
     :root{
-      --bg1:#fff7df;
-      --bg2:#eaf8ff;
-      --card:#ffffffcc;
-      --ink:#243047;
-      --muted:#5f6c80;
-      --minute:#256bd8;
-      --hour:#d43d44;
-      --green:#2f9b53;
-      --purple:#7c3fc7;
-      --yellow:#f5b51b;
-      --ring:#f0c043;
-      --dot:#3fb76b;
-      --shadow:0 22px 60px rgba(31,45,71,.18);
-      --radius:32px;
+      --ink:#24324a;
+      --muted:#647086;
+      --cream:#fff9df;
+      --sky:#dff5ff;
+      --card:#ffffff;
+      --hour:#e84f5f;
+      --hour-dark:#bd3042;
+      --minute:#2878dc;
+      --minute-dark:#1455a8;
+      --purple:#7651bd;
+      --green:#38a865;
+      --yellow:#ffc94d;
+      --orange:#f59a3b;
+      --line:#e7eaf1;
+      --shadow:0 18px 55px rgba(45,59,87,.15);
     }
 
     *{box-sizing:border-box}
-
-    html,body{height:100%}
-
+    html{min-height:100%;background:#fff8dc}
     body{
+      min-height:100%;
       margin:0;
-      font-family: ui-rounded, "Avenir Next", "Nunito", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       color:var(--ink);
+      font-family:ui-rounded,"Avenir Next Rounded","Nunito","Arial Rounded MT Bold",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
       background:
-        radial-gradient(circle at 12% 15%, #fff2b6 0 16%, transparent 17%),
-        radial-gradient(circle at 86% 8%, #d8f2ff 0 18%, transparent 19%),
-        linear-gradient(135deg,var(--bg1),var(--bg2));
+        radial-gradient(circle at 8% 10%,rgba(255,213,82,.38) 0 8rem,transparent 8.1rem),
+        radial-gradient(circle at 91% 8%,rgba(112,211,255,.32) 0 10rem,transparent 10.1rem),
+        linear-gradient(145deg,#fff8dc 0%,#f7fcff 52%,#e7f7ff 100%);
       overflow-x:hidden;
     }
 
-    main{
-      min-height:100%;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:18px;
-      padding:24px;
-    }
+    button,input,summary{font:inherit}
+    button{-webkit-tap-highlight-color:transparent}
 
-    .app{
-      width:min(1120px,100%);
-      background:var(--card);
-      border:1px solid rgba(255,255,255,.7);
+    .island{
+      width:min(1180px,calc(100% - 28px));
+      margin:22px auto;
+      padding:clamp(16px,2.6vw,30px);
+      background:rgba(255,255,255,.82);
+      border:1px solid rgba(255,255,255,.95);
+      border-radius:34px;
       box-shadow:var(--shadow);
-      border-radius:var(--radius);
-      padding:clamp(18px,3vw,32px);
-      backdrop-filter:blur(14px);
+      backdrop-filter:blur(16px);
     }
 
-    header{
+    .topbar{
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
@@ -65,573 +60,711 @@
       margin-bottom:18px;
     }
 
-    .title-wrap{max-width:720px}
-
+    .brand{display:flex;align-items:center;gap:14px}
+    .brand-badge{
+      width:58px;height:58px;flex:0 0 auto;
+      display:grid;place-items:center;
+      border-radius:19px;
+      background:linear-gradient(145deg,#ffe27a,#ffbd43);
+      box-shadow:0 10px 20px rgba(221,147,27,.22);
+      font-size:34px;
+    }
     h1{
       margin:0;
-      font-size:clamp(30px,5vw,56px);
-      letter-spacing:-.04em;
-      line-height:.95;
+      font-size:clamp(28px,4.4vw,50px);
+      line-height:1;
+      letter-spacing:-.035em;
     }
-
     .subtitle{
-      margin:10px 0 0;
+      margin:8px 0 0;
+      max-width:760px;
       color:var(--muted);
-      font-size:clamp(16px,2vw,21px);
+      font-size:clamp(16px,1.8vw,20px);
+      font-weight:700;
       line-height:1.35;
     }
 
-    .fullscreen{
-      white-space:nowrap;
-      border:none;
-      border-radius:999px;
-      background:#fff;
-      color:var(--ink);
-      padding:12px 18px;
-      font-weight:800;
-      font-size:16px;
-      box-shadow:0 10px 22px rgba(31,45,71,.12);
+    .icon-btn{
+      min-width:50px;min-height:50px;
+      border:0;border-radius:17px;
+      background:#fff;color:var(--ink);
+      box-shadow:0 8px 20px rgba(45,59,87,.12);
       cursor:pointer;
+      font-size:21px;font-weight:900;
     }
+    .icon-btn:hover{transform:translateY(-1px)}
 
-    .stage{
+    .workspace{
       display:grid;
-      grid-template-columns:minmax(360px,1fr) minmax(270px,360px);
+      grid-template-columns:minmax(430px,1fr) minmax(300px,370px);
+      gap:clamp(18px,3vw,36px);
       align-items:center;
-      gap:clamp(18px,4vw,42px);
     }
 
-    .clock-card{
+    .clock-area{
+      position:relative;
+      display:grid;
+      place-items:center;
+      min-width:0;
+      padding:10px 0;
+    }
+
+    .legend{
       display:flex;
       justify-content:center;
-      align-items:center;
-      padding:10px;
-      min-height:420px;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:2px;
     }
+    .legend-chip{
+      display:flex;align-items:center;gap:8px;
+      border-radius:999px;
+      background:#fff;
+      border:2px solid var(--line);
+      padding:9px 13px;
+      font-size:15px;
+      font-weight:900;
+      box-shadow:0 6px 15px rgba(45,59,87,.07);
+    }
+    .legend-line{display:block;border-radius:999px}
+    .legend-line.hour{width:28px;height:9px;background:var(--hour)}
+    .legend-line.minute{width:40px;height:7px;background:var(--minute)}
 
     #clock{
-      width:min(72vh,100%);
-      max-width:620px;
-      min-width:330px;
+      display:block;
+      width:min(68vh,100%);
+      max-width:650px;
+      min-width:360px;
       height:auto;
       touch-action:none;
       user-select:none;
-      filter:drop-shadow(0 18px 26px rgba(36,48,71,.12));
+      filter:drop-shadow(0 18px 24px rgba(45,59,87,.13));
+      overflow:visible;
     }
-
-    .clock-face{fill:#fffceb;stroke:var(--ring);stroke-width:10}
-    .minute-dot{fill:var(--dot)}
+    .clock-shadow{fill:#c8d5de;opacity:.32}
+    .clock-rim{fill:#fff5b6;stroke:#f3bd42;stroke-width:10}
+    .clock-face{fill:#fffef7;stroke:#fff;stroke-width:5}
+    .minute-tick{stroke:#b8c8d0;stroke-linecap:round}
+    .minute-tick.major{stroke:#45a971}
     .hour-number{
+      fill:#6947ac;
       font-size:29px;
-      font-weight:900;
-      fill:#6a35bf;
-      dominant-baseline:middle;
+      font-weight:950;
       text-anchor:middle;
+      dominant-baseline:middle;
+      paint-order:stroke;
+      stroke:#fffef7;
+      stroke-width:3px;
     }
-    .hand{stroke-linecap:round;cursor:grab;transition:filter .2s ease}
-    .hand:active{cursor:grabbing}
-    .hand.disabled{opacity:.28;cursor:not-allowed}
-    #minuteHand{stroke:var(--minute);stroke-width:13}
-    #hourHand{stroke:var(--hour);stroke-width:14}
-    .grab{cursor:grab;stroke:white;stroke-width:5;filter:drop-shadow(0 4px 8px rgba(0,0,0,.18))}
-    .grab.disabled{opacity:.28;cursor:not-allowed}
-    .center{fill:var(--yellow);stroke:#fff;stroke-width:5}
+    .hand-visible{stroke-linecap:round;pointer-events:none}
+    #hourHand{stroke:var(--hour);stroke-width:16}
+    #minuteHand{stroke:var(--minute);stroke-width:12}
+    .hand-hit{
+      stroke:transparent;
+      stroke-width:46;
+      stroke-linecap:round;
+      cursor:grab;
+      outline:none;
+    }
+    .hand-hit:active{cursor:grabbing}
+    .grab{
+      cursor:grab;
+      stroke:#fff;
+      stroke-width:5;
+      filter:drop-shadow(0 4px 5px rgba(0,0,0,.18));
+    }
+    .grab:active{cursor:grabbing}
+    .center-pin{fill:var(--yellow);stroke:#fff;stroke-width:6}
+    .center-dot{fill:#bf7c1d}
+    .disabled-hand{opacity:.24;pointer-events:none}
 
-    .panel{
-      background:#fff;
-      border-radius:30px;
-      padding:22px;
-      box-shadow:0 14px 34px rgba(31,45,71,.12);
+    .side{
+      display:grid;
+      gap:14px;
     }
 
-    .digital{
-      min-height:104px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      border-radius:24px;
-      background:linear-gradient(135deg,#8a45d8,#5d2faf);
-      color:#fff;
-      margin-bottom:18px;
-      padding:14px;
+    .dragon-card{
       position:relative;
+      display:grid;
+      grid-template-columns:116px 1fr;
+      align-items:center;
+      gap:8px;
+      padding:12px 16px 12px 8px;
+      border-radius:26px;
+      background:linear-gradient(145deg,#eefced,#e1f8ed);
+      border:2px solid #ccefd8;
       overflow:hidden;
     }
-
-    .digital::before{
+    .dragon-card::after{
       content:"";
       position:absolute;
-      inset:-40%;
-      background:radial-gradient(circle,rgba(255,255,255,.2),transparent 42%);
-      transform:translateX(-30%);
+      width:140px;height:140px;border-radius:50%;
+      right:-65px;top:-75px;
+      background:rgba(255,255,255,.45);
+    }
+    .dragon{width:116px;height:116px;position:relative;z-index:1}
+    .dragon-speech{position:relative;z-index:1}
+    .dragon-name{font-size:14px;font-weight:950;color:#29784a;text-transform:uppercase;letter-spacing:.08em}
+    .dragon-text{margin:4px 0 0;font-size:18px;font-weight:900;line-height:1.25}
+    .dragon-card.celebrate .spark{animation:pop .75s ease both}
+    .spark{transform-origin:center;opacity:0}
+    @keyframes pop{
+      0%{transform:scale(.2) rotate(-20deg);opacity:0}
+      45%{transform:scale(1.35) rotate(12deg);opacity:1}
+      100%{transform:scale(1) rotate(0);opacity:.9}
     }
 
-    .digital-content{position:relative;z-index:1}
-
+    .digital-card{
+      width:100%;
+      min-height:128px;
+      position:relative;
+      display:grid;
+      place-items:center;
+      border:0;
+      border-radius:28px;
+      padding:16px;
+      overflow:hidden;
+      cursor:pointer;
+      color:#fff;
+      background:linear-gradient(145deg,#8157ca,#5f39ad);
+      box-shadow:0 13px 26px rgba(91,55,165,.27);
+    }
+    .digital-card::before{
+      content:"";
+      position:absolute;inset:-50%;
+      background:radial-gradient(circle,rgba(255,255,255,.24) 0 15%,transparent 42%);
+      transform:translate(-20%,-15%);
+    }
+    .digital-card:hover{transform:translateY(-1px)}
+    .digital-inner{position:relative;z-index:1;text-align:center}
+    .digital-label{font-size:15px;font-weight:850;opacity:.92;margin-bottom:5px}
     .digital-time{
-      font-size:clamp(40px,6vw,64px);
-      line-height:1;
-      letter-spacing:.03em;
+      font-size:clamp(43px,6vw,68px);
+      line-height:.95;
       font-weight:950;
+      letter-spacing:.035em;
       font-variant-numeric:tabular-nums;
     }
+    .digital-words{margin-top:8px;font-size:19px;font-weight:900}
+    .digital-card:not(.revealed) .digital-time{letter-spacing:.09em}
 
-    .digital-words{
-      font-size:19px;
-      font-weight:850;
-      opacity:.95;
-      margin-top:8px;
+    .main-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .action{
+      border:0;border-radius:19px;
+      min-height:58px;
+      padding:12px 14px;
+      cursor:pointer;
+      font-size:17px;
+      font-weight:950;
+      box-shadow:0 9px 19px rgba(45,59,87,.12);
     }
+    .action.primary{background:var(--green);color:#fff}
+    .action.secondary{background:#fff;color:var(--ink);border:2px solid var(--line);box-shadow:none}
+    .action:active,.digital-card:active,.icon-btn:active{transform:scale(.98)}
 
-    .hidden-time .digital-content{filter:blur(9px);opacity:.38}
-    .hidden-time .cover{
+    details.teacher{
+      border:2px solid var(--line);
+      border-radius:22px;
+      background:#fff;
+      overflow:hidden;
+    }
+    details.teacher summary{
+      padding:14px 16px;
+      cursor:pointer;
+      list-style:none;
+      font-weight:950;
+      color:#536077;
+    }
+    details.teacher summary::-webkit-details-marker{display:none}
+    details.teacher summary::after{content:"＋";float:right;font-size:21px;line-height:1}
+    details.teacher[open] summary::after{content:"−"}
+    .teacher-content{padding:0 14px 15px;display:grid;gap:12px}
+    .settings-title{font-size:13px;font-weight:950;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+    .modes{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    .mode{
+      border:2px solid #e7eaf1;
+      border-radius:14px;
+      padding:10px 8px;
+      background:#f9fafc;
+      color:var(--ink);
+      font-size:14px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .mode.active{background:#fff3bf;border-color:#efbd3f;color:#6f5000}
+    .toggles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .toggle{
+      display:flex;align-items:center;gap:8px;
+      padding:10px;
+      border-radius:14px;
+      background:#f7f8fb;
+      font-size:14px;font-weight:900;
+    }
+    .toggle input{width:21px;height:21px;accent-color:var(--green)}
+    .dot{width:13px;height:13px;border-radius:50%;display:inline-block;flex:0 0 auto}
+    .dot.hour{background:var(--hour)}
+    .dot.minute{background:var(--minute)}
+
+    .class-task{
+      margin-top:18px;
       display:flex;
-    }
-    .cover{
-      display:none;
-      position:absolute;
-      inset:0;
       align-items:center;
       justify-content:center;
-      padding:18px;
-      z-index:2;
-      background:linear-gradient(135deg,#8a45d8,#5d2faf);
-      font-size:24px;
+      gap:10px;
+      padding:13px 16px;
+      border-radius:20px;
+      background:#fff6d3;
+      border:2px dashed #edbd48;
+      color:#684e0c;
+      font-size:16px;
       font-weight:900;
+      text-align:center;
     }
 
-    .controls{display:grid;gap:12px}
-
-    button,.mode{
-      -webkit-tap-highlight-color:transparent;
-    }
-
-    .big-btn{
-      border:none;
-      border-radius:18px;
-      padding:16px 18px;
-      font-size:19px;
-      font-weight:950;
+    .toast{
+      position:fixed;
+      left:50%;bottom:22px;
+      translate:-50% 20px;
+      opacity:0;
+      pointer-events:none;
+      z-index:20;
+      border-radius:999px;
+      background:#25324a;
       color:#fff;
-      background:var(--green);
-      cursor:pointer;
-      box-shadow:0 10px 18px rgba(47,155,83,.22);
-    }
-
-    .big-btn.secondary{
-      background:#7540bf;
-      box-shadow:0 10px 18px rgba(117,64,191,.18);
-    }
-
-    .big-btn.soft{
-      color:var(--ink);
-      background:#eef5ff;
-      box-shadow:none;
-      border:2px solid #dce9ff;
-    }
-
-    .switches{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
-
-    label.switch{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      background:#f7f8fb;
-      border:2px solid #eceff5;
-      border-radius:18px;
-      padding:12px;
-      font-weight:850;
-      color:var(--ink);
-    }
-
-    input[type="checkbox"]{
-      width:24px;
-      height:24px;
-      accent-color:var(--green);
-      flex:0 0 auto;
-    }
-
-    .legend-dot{
-      width:14px;
-      height:14px;
-      border-radius:99px;
-      display:inline-block;
-    }
-    .legend-dot.hour{background:var(--hour)}
-    .legend-dot.minute{background:var(--minute)}
-
-    .mode-box{
-      margin-top:4px;
-      background:#f8f9fc;
-      border:2px solid #eceff5;
-      border-radius:22px;
-      padding:12px;
-    }
-
-    .mode-title{
-      font-size:15px;
-      font-weight:950;
-      color:var(--muted);
-      margin:0 0 9px;
-    }
-
-    .modes{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:8px;
-    }
-
-    .mode{
-      border:2px solid transparent;
-      border-radius:16px;
-      padding:10px 8px;
-      background:white;
-      color:var(--ink);
+      padding:11px 17px;
       font-weight:900;
-      cursor:pointer;
-      font-size:15px;
+      box-shadow:0 10px 24px rgba(0,0,0,.2);
+      transition:.25s ease;
+    }
+    .toast.show{translate:-50% 0;opacity:1}
+
+    @media (max-width:900px){
+      .workspace{grid-template-columns:1fr}
+      .side{width:min(620px,100%);margin:0 auto}
+      #clock{width:min(65vh,100%);max-width:600px}
+      .dragon-card{grid-template-columns:100px 1fr}
+      .dragon{width:100px;height:100px}
     }
 
-    .mode.active{
-      background:#fff7d7;
-      border-color:#f0c043;
+    @media (max-width:540px){
+      .island{width:calc(100% - 14px);margin:7px auto;padding:13px;border-radius:24px}
+      .topbar{align-items:center;margin-bottom:10px}
+      .brand{gap:10px}
+      .brand-badge{width:46px;height:46px;border-radius:15px;font-size:27px}
+      h1{font-size:28px}
+      .subtitle{font-size:14px;margin-top:5px}
+      .icon-btn{min-width:44px;min-height:44px;border-radius:14px;font-size:18px}
+      #clock{min-width:285px}
+      .hour-number{font-size:27px}
+      .legend-chip{padding:7px 10px;font-size:13px}
+      .dragon-card{grid-template-columns:86px 1fr;padding:8px 12px 8px 4px}
+      .dragon{width:86px;height:86px}
+      .dragon-text{font-size:16px}
+      .digital-card{min-height:108px;border-radius:23px}
+      .main-actions{grid-template-columns:1fr}
+      .class-task{font-size:14px}
     }
 
-    .hint{
-      margin:14px 0 0;
-      color:var(--muted);
-      font-size:15px;
-      line-height:1.35;
-    }
-
-    .task-line{
-      margin-top:18px;
-      padding:14px 18px;
-      border-radius:22px;
-      background:#fff8df;
-      border:2px dashed #f0c043;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      font-size:18px;
-      font-weight:900;
-    }
-
-    .task-line span{color:#7a5a00}
-
-    @media (max-width:860px){
-      main{padding:12px}
-      header{flex-direction:column}
-      .stage{grid-template-columns:1fr}
-      .clock-card{min-height:auto}
-      #clock{width:100%;max-width:560px}
-      .panel{padding:16px}
-      .switches,.modes{grid-template-columns:1fr}
-      .fullscreen{align-self:flex-start}
-    }
-
-    @media (max-width:460px){
-      .app{border-radius:22px;padding:14px}
-      #clock{min-width:280px}
-      .hour-number{font-size:25px}
-      .task-line{font-size:16px;align-items:flex-start;flex-direction:column}
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
     }
   </style>
 </head>
 <body>
-<main>
-  <section class="app" aria-label="Interaktive Analoguhr für Klasse 1">
-    <header>
-      <div class="title-wrap">
-        <h1>Uhren-Spielplatz</h1>
-        <p class="subtitle">Schiebe den kleinen roten Stundenzeiger und den großen blauen Minutenzeiger. Die digitale Uhrzeit bleibt versteckt, bis du sie aufdeckst.</p>
+  <main class="island">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true">🕰️</div>
+        <div>
+          <h1>Flämmchens Uhreninsel</h1>
+          <p class="subtitle">Ziehe die beiden Zeiger. Tippe danach auf das lila Feld und prüfe deine Uhrzeit.</p>
+        </div>
       </div>
-      <button class="fullscreen" id="fullscreenBtn" type="button">⛶ Vollbild</button>
+      <button id="fullscreenBtn" class="icon-btn" type="button" aria-label="Vollbild öffnen" title="Vollbild">⛶</button>
     </header>
 
-    <div class="stage">
-      <div class="clock-card">
-        <svg id="clock" viewBox="0 0 400 400" role="img" aria-label="Analoge Uhr mit beweglichen Zeigern">
-          <circle class="clock-face" cx="200" cy="200" r="176"></circle>
-          <g id="minuteDots"></g>
+    <section class="workspace" aria-label="Interaktive Lernuhr">
+      <div class="clock-area">
+        <div class="legend" aria-label="Erklärung der Zeiger">
+          <div class="legend-chip"><span class="legend-line hour"></span>klein: Stunde</div>
+          <div class="legend-chip"><span class="legend-line minute"></span>groß: Minute</div>
+        </div>
+
+        <svg id="clock" viewBox="0 0 420 420" role="img" aria-label="Analoge Uhr mit beweglichem roten Stundenzeiger und blauem Minutenzeiger">
+          <circle class="clock-shadow" cx="210" cy="218" r="183"></circle>
+          <circle class="clock-rim" cx="210" cy="210" r="183"></circle>
+          <circle class="clock-face" cx="210" cy="210" r="171"></circle>
+          <g id="ticks"></g>
           <g id="numbers"></g>
-          <line id="hourHand" class="hand" x1="200" y1="200" x2="200" y2="115"></line>
-          <line id="minuteHand" class="hand" x1="200" y1="200" x2="200" y2="75"></line>
-          <circle id="hourGrab" class="grab" cx="200" cy="115" r="15" fill="#d43d44"></circle>
-          <circle id="minuteGrab" class="grab" cx="200" cy="75" r="15" fill="#256bd8"></circle>
-          <circle class="center" cx="200" cy="200" r="16"></circle>
+
+          <line id="hourHit" class="hand-hit" x1="210" y1="210" x2="210" y2="115" tabindex="0" role="slider" aria-label="Stundenzeiger" aria-valuemin="1" aria-valuemax="12"></line>
+          <line id="minuteHit" class="hand-hit" x1="210" y1="210" x2="210" y2="72" tabindex="0" role="slider" aria-label="Minutenzeiger" aria-valuemin="0" aria-valuemax="59"></line>
+          <line id="hourHand" class="hand-visible" x1="210" y1="210" x2="210" y2="115"></line>
+          <line id="minuteHand" class="hand-visible" x1="210" y1="210" x2="210" y2="72"></line>
+          <circle id="hourGrab" class="grab" cx="210" cy="115" r="16" fill="#e84f5f"></circle>
+          <circle id="minuteGrab" class="grab" cx="210" cy="72" r="16" fill="#2878dc"></circle>
+          <circle class="center-pin" cx="210" cy="210" r="18"></circle>
+          <circle class="center-dot" cx="210" cy="210" r="6"></circle>
         </svg>
       </div>
 
-      <aside class="panel">
-        <div id="digitalBox" class="digital hidden-time" aria-live="polite">
-          <div class="cover">digitale Uhrzeit versteckt</div>
-          <div class="digital-content">
-            <div id="digitalTime" class="digital-time">08:00</div>
-            <div id="digitalWords" class="digital-words">8 Uhr</div>
+      <aside class="side">
+        <div id="dragonCard" class="dragon-card" aria-live="polite">
+          <svg class="dragon" viewBox="0 0 140 140" aria-hidden="true">
+            <g class="spark" style="transform-origin:19px 25px"><path d="M19 14l3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="#ffd34f"/></g>
+            <g class="spark" style="transform-origin:119px 28px;animation-delay:.08s"><path d="M119 18l2.5 6.5 6.5 2.5-6.5 2.5-2.5 6.5-2.5-6.5-6.5-2.5 6.5-2.5z" fill="#ffd34f"/></g>
+            <path d="M40 106c-17 8-20 23-9 25 10 2 15-8 14-16" fill="none" stroke="#e26e28" stroke-width="10" stroke-linecap="round"/>
+            <ellipse cx="73" cy="91" rx="39" ry="35" fill="#f59a3b"/>
+            <path d="M48 76c-14-8-25-1-25 10 10-6 18-3 23 3" fill="#78b85a" stroke="#4d8c3c" stroke-width="3"/>
+            <path d="M101 76c14-8 25-1 25 10-10-6-18-3-23 3" fill="#78b85a" stroke="#4d8c3c" stroke-width="3"/>
+            <circle cx="73" cy="53" r="31" fill="#f7a54b"/>
+            <path d="M49 33l-9-12 17 5M96 33l9-12-17 5" fill="#f7c45c" stroke="#d4772c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M62 56c2-3 6-3 8 0M82 56c2-3 6-3 8 0" fill="none" stroke="#30384b" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="65" cy="50" r="3.4" fill="#30384b"/><circle cx="87" cy="50" r="3.4" fill="#30384b"/>
+            <ellipse cx="76" cy="67" rx="18" ry="12" fill="#ffd18a"/>
+            <circle cx="69" cy="65" r="2.2" fill="#b8622c"/><circle cx="83" cy="65" r="2.2" fill="#b8622c"/>
+            <path d="M69 72c5 5 12 5 17 0" fill="none" stroke="#8c3f2d" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M55 105c6 8 31 8 38 0" fill="#ffe1a8"/>
+            <path d="M61 23l8-14 8 14M78 22L88 9l4 18" fill="#78b85a" stroke="#4d8c3c" stroke-width="3" stroke-linejoin="round"/>
+          </svg>
+          <div class="dragon-speech">
+            <div class="dragon-name">Flämmchen sagt:</div>
+            <p id="dragonText" class="dragon-text">Zieh zuerst den kleinen roten Zeiger zur Stunde.</p>
           </div>
         </div>
 
-        <div class="controls">
-          <div class="switches" aria-label="Zeiger auswählen">
-            <label class="switch"><input id="hourToggle" type="checkbox" checked><span class="legend-dot hour"></span>Stundenzeiger</label>
-            <label class="switch"><input id="minuteToggle" type="checkbox" checked><span class="legend-dot minute"></span>Minutenzeiger</label>
+        <button id="digitalCard" class="digital-card" type="button" aria-pressed="false" aria-label="Digitale Uhrzeit anzeigen">
+          <div class="digital-inner">
+            <div id="digitalLabel" class="digital-label">Antippen und prüfen</div>
+            <div id="digitalTime" class="digital-time">??:??</div>
+            <div id="digitalWords" class="digital-words">Welche Uhrzeit ist es?</div>
           </div>
+        </button>
 
-          <button id="randomBtn" class="big-btn" type="button">🎲 Zufällige Zeit</button>
-          <button id="revealBtn" class="big-btn secondary" type="button">Digitale Zeit aufdecken</button>
-          <button id="resetBtn" class="big-btn soft" type="button">↺ Wieder auf 8 Uhr</button>
+        <div class="main-actions">
+          <button id="randomBtn" class="action primary" type="button">🎲 Neue Uhrzeit</button>
+          <button id="resetBtn" class="action secondary" type="button">↺ Auf 8 Uhr</button>
+        </div>
 
-          <div class="mode-box">
-            <p class="mode-title">Übungsmodus</p>
-            <div class="modes">
-              <button class="mode active" data-mode="full" type="button">volle Stunden</button>
-              <button class="mode" data-mode="half" type="button">halb & voll</button>
-              <button class="mode" data-mode="five" type="button">5-Minuten</button>
-              <button class="mode" data-mode="free" type="button">frei</button>
+        <details class="teacher">
+          <summary>Einstellungen für Lehrkräfte</summary>
+          <div class="teacher-content">
+            <div class="settings-title">Übungsstufe</div>
+            <div class="modes" role="group" aria-label="Übungsstufe auswählen">
+              <button class="mode active" data-mode="full" type="button">Volle Stunden</button>
+              <button class="mode" data-mode="half" type="button">Halb &amp; voll</button>
+              <button class="mode" data-mode="quarter" type="button">Viertelstunden</button>
+              <button class="mode" data-mode="five" type="button">5-Minuten-Schritte</button>
+              <button class="mode" data-mode="free" type="button">Ganz frei</button>
+            </div>
+
+            <div class="settings-title">Zeiger ein- oder ausblenden</div>
+            <div class="toggles">
+              <label class="toggle"><input id="hourToggle" type="checkbox" checked><span class="dot hour"></span>Stunde</label>
+              <label class="toggle"><input id="minuteToggle" type="checkbox" checked><span class="dot minute"></span>Minute</label>
             </div>
           </div>
-        </div>
-
-        <p class="hint">Tipp: Für Klasse 1 zuerst „volle Stunden“ nutzen. Danach „halb & voll“ einschalten.</p>
+        </details>
       </aside>
-    </div>
+    </section>
 
-    <div class="task-line">
-      <span>Auftrag: Stelle eine Uhrzeit ein. Partnerkind kontrolliert erst analog, dann digital.</span>
-      <span id="modeInfo">Modus: volle Stunden</span>
-    </div>
-  </section>
-</main>
+    <div class="class-task">💡 Partnerauftrag: Ein Kind stellt die Uhr. Das andere Kind nennt die Uhrzeit und prüft sie digital.</div>
+  </main>
 
-<script>
-(() => {
-  const svg = document.getElementById('clock');
-  const numbers = document.getElementById('numbers');
-  const minuteDots = document.getElementById('minuteDots');
-  const hourHand = document.getElementById('hourHand');
-  const minuteHand = document.getElementById('minuteHand');
-  const hourGrab = document.getElementById('hourGrab');
-  const minuteGrab = document.getElementById('minuteGrab');
-  const digitalBox = document.getElementById('digitalBox');
-  const digitalTime = document.getElementById('digitalTime');
-  const digitalWords = document.getElementById('digitalWords');
-  const revealBtn = document.getElementById('revealBtn');
-  const randomBtn = document.getElementById('randomBtn');
-  const resetBtn = document.getElementById('resetBtn');
-  const fullscreenBtn = document.getElementById('fullscreenBtn');
-  const hourToggle = document.getElementById('hourToggle');
-  const minuteToggle = document.getElementById('minuteToggle');
-  const modeButtons = Array.from(document.querySelectorAll('.mode'));
-  const modeInfo = document.getElementById('modeInfo');
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  const CENTER = { x: 200, y: 200 };
-  const RAD = Math.PI / 180;
-  const MODES = {
-    full: { label: 'volle Stunden', minuteChoices: [0] },
-    half: { label: 'halb & voll', minuteChoices: [0, 30] },
-    five: { label: '5-Minuten', step: 5 },
-    free: { label: 'frei', step: 1 }
-  };
+  <script>
+    (() => {
+      'use strict';
 
-  let time = { hour: 8, minute: 0 }; // hour: 1 bis 12
-  let mode = 'full';
-  let revealed = false;
-  let dragging = null;
+      const svg = document.getElementById('clock');
+      const ticks = document.getElementById('ticks');
+      const numbers = document.getElementById('numbers');
+      const hourHand = document.getElementById('hourHand');
+      const minuteHand = document.getElementById('minuteHand');
+      const hourHit = document.getElementById('hourHit');
+      const minuteHit = document.getElementById('minuteHit');
+      const hourGrab = document.getElementById('hourGrab');
+      const minuteGrab = document.getElementById('minuteGrab');
+      const digitalCard = document.getElementById('digitalCard');
+      const digitalLabel = document.getElementById('digitalLabel');
+      const digitalTime = document.getElementById('digitalTime');
+      const digitalWords = document.getElementById('digitalWords');
+      const randomBtn = document.getElementById('randomBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const fullscreenBtn = document.getElementById('fullscreenBtn');
+      const hourToggle = document.getElementById('hourToggle');
+      const minuteToggle = document.getElementById('minuteToggle');
+      const modeButtons = [...document.querySelectorAll('.mode')];
+      const dragonCard = document.getElementById('dragonCard');
+      const dragonText = document.getElementById('dragonText');
+      const toast = document.getElementById('toast');
 
-  function polarToPoint(deg, length){
-    const angle = (deg - 90) * RAD;
-    return {
-      x: CENTER.x + Math.cos(angle) * length,
-      y: CENTER.y + Math.sin(angle) * length
-    };
-  }
+      const CENTER = {x:210,y:210};
+      const RAD = Math.PI / 180;
+      const MODES = {
+        full: {label:'Volle Stunden', choices:[0]},
+        half: {label:'Halb und voll', choices:[0,30]},
+        quarter: {label:'Viertelstunden', choices:[0,15,30,45]},
+        five: {label:'5-Minuten-Schritte', step:5},
+        free: {label:'Ganz frei', step:1}
+      };
 
-  function angleFromPoint(evt){
-    const pt = svg.createSVGPoint();
-    pt.x = evt.clientX;
-    pt.y = evt.clientY;
-    const cursor = pt.matrixTransform(svg.getScreenCTM().inverse());
-    const dx = cursor.x - CENTER.x;
-    const dy = cursor.y - CENTER.y;
-    let deg = Math.atan2(dy, dx) / RAD + 90;
-    if (deg < 0) deg += 360;
-    return deg % 360;
-  }
+      let time = {hour:8,minute:0};
+      let mode = 'full';
+      let revealed = false;
+      let dragging = null;
+      let toastTimer = null;
 
-  function nearestFromList(value, list){
-    return list.reduce((best, current) => {
-      const bestDist = Math.min(Math.abs(value - best), 60 - Math.abs(value - best));
-      const currentDist = Math.min(Math.abs(value - current), 60 - Math.abs(value - current));
-      return currentDist < bestDist ? current : best;
-    }, list[0]);
-  }
+      function polarToPoint(degrees,length){
+        const angle = (degrees - 90) * RAD;
+        return {
+          x:CENTER.x + Math.cos(angle) * length,
+          y:CENTER.y + Math.sin(angle) * length
+        };
+      }
 
-  function snapMinute(rawMinute){
-    rawMinute = ((rawMinute % 60) + 60) % 60;
-    const cfg = MODES[mode];
-    if (cfg.minuteChoices) return nearestFromList(rawMinute, cfg.minuteChoices);
-    const snapped = Math.round(rawMinute / cfg.step) * cfg.step;
-    return snapped === 60 ? 0 : snapped;
-  }
+      function pointerAngle(event){
+        const point = svg.createSVGPoint();
+        point.x = event.clientX;
+        point.y = event.clientY;
+        const matrix = svg.getScreenCTM();
+        if(!matrix) return 0;
+        const cursor = point.matrixTransform(matrix.inverse());
+        let degrees = Math.atan2(cursor.y - CENTER.y,cursor.x - CENTER.x) / RAD + 90;
+        if(degrees < 0) degrees += 360;
+        return degrees % 360;
+      }
 
-  function pad2(n){ return String(n).padStart(2,'0'); }
+      function circularDistance(a,b,range=60){
+        return Math.min(Math.abs(a-b),range-Math.abs(a-b));
+      }
 
-  function timeInWords(){
-    if(time.minute === 0) return `${time.hour} Uhr`;
-    if(time.minute === 30) return `halb ${time.hour === 12 ? 1 : time.hour + 1}`;
-    return `${time.hour} Uhr ${time.minute}`;
-  }
+      function nearestChoice(value,choices){
+        return choices.reduce((best,current) => circularDistance(value,current) < circularDistance(value,best) ? current : best,choices[0]);
+      }
 
-  function updateDigital(){
-    digitalTime.textContent = `${pad2(time.hour)}:${pad2(time.minute)}`;
-    digitalWords.textContent = timeInWords();
-  }
+      function snapMinute(raw){
+        const normalized = ((raw % 60) + 60) % 60;
+        const config = MODES[mode];
+        if(config.choices) return nearestChoice(normalized,config.choices);
+        const rounded = Math.round(normalized / config.step) * config.step;
+        return rounded === 60 ? 0 : rounded;
+      }
 
-  function setRevealed(value){
-    revealed = value;
-    digitalBox.classList.toggle('hidden-time', !revealed);
-    revealBtn.textContent = revealed ? 'Digitale Zeit verstecken' : 'Digitale Zeit aufdecken';
-  }
+      function pad2(number){return String(number).padStart(2,'0')}
 
-  function updateHands(){
-    const minuteDeg = time.minute * 6;
-    const hourDeg = ((time.hour % 12) * 30) + (time.minute * 0.5);
-    const minEnd = polarToPoint(minuteDeg, 128);
-    const hourEnd = polarToPoint(hourDeg, 88);
+      function wordsForTime(){
+        const nextHour = time.hour === 12 ? 1 : time.hour + 1;
+        if(time.minute === 0) return `${time.hour} Uhr`;
+        if(time.minute === 30) return `halb ${nextHour}`;
+        return `${time.hour} Uhr ${pad2(time.minute)}`;
+      }
 
-    minuteHand.setAttribute('x2', minEnd.x);
-    minuteHand.setAttribute('y2', minEnd.y);
-    minuteGrab.setAttribute('cx', minEnd.x);
-    minuteGrab.setAttribute('cy', minEnd.y);
+      function hideDigital(message='Tippe auf das lila Feld und prüfe deine Lösung.'){
+        revealed = false;
+        digitalCard.classList.remove('revealed');
+        digitalCard.setAttribute('aria-pressed','false');
+        digitalCard.setAttribute('aria-label','Digitale Uhrzeit anzeigen');
+        digitalLabel.textContent = 'Antippen und prüfen';
+        digitalTime.textContent = '??:??';
+        digitalWords.textContent = 'Welche Uhrzeit ist es?';
+        dragonText.textContent = message;
+      }
 
-    hourHand.setAttribute('x2', hourEnd.x);
-    hourHand.setAttribute('y2', hourEnd.y);
-    hourGrab.setAttribute('cx', hourEnd.x);
-    hourGrab.setAttribute('cy', hourEnd.y);
+      function revealDigital(){
+        revealed = true;
+        digitalCard.classList.add('revealed');
+        digitalCard.setAttribute('aria-pressed','true');
+        digitalCard.setAttribute('aria-label','Digitale Uhrzeit wieder verstecken');
+        digitalLabel.textContent = 'Die digitale Uhrzeit';
+        digitalTime.textContent = `${pad2(time.hour)}:${pad2(time.minute)}`;
+        digitalWords.textContent = wordsForTime();
+        dragonText.textContent = `Gut geprüft! Die Uhr zeigt ${wordsForTime()}.`;
+        celebrate();
+      }
 
-    const hourEnabled = hourToggle.checked;
-    const minuteEnabled = minuteToggle.checked;
-    hourHand.classList.toggle('disabled', !hourEnabled);
-    hourGrab.classList.toggle('disabled', !hourEnabled);
-    minuteHand.classList.toggle('disabled', !minuteEnabled);
-    minuteGrab.classList.toggle('disabled', !minuteEnabled);
-  }
+      function celebrate(){
+        dragonCard.classList.remove('celebrate');
+        void dragonCard.offsetWidth;
+        dragonCard.classList.add('celebrate');
+        window.setTimeout(() => dragonCard.classList.remove('celebrate'),850);
+      }
 
-  function render(){
-    updateHands();
-    updateDigital();
-  }
+      function updateHands(){
+        const minuteDegrees = time.minute * 6;
+        const hourDegrees = (time.hour % 12) * 30 + time.minute * .5;
+        const minuteEnd = polarToPoint(minuteDegrees,137);
+        const hourEnd = polarToPoint(hourDegrees,92);
 
-  function drawClockFace(){
-    for(let i=0;i<60;i++){
-      const p = polarToPoint(i * 6, i % 5 === 0 ? 159 : 166);
-      const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
-      dot.setAttribute('cx', p.x);
-      dot.setAttribute('cy', p.y);
-      dot.setAttribute('r', i % 5 === 0 ? 4.8 : 3.2);
-      dot.setAttribute('class','minute-dot');
-      minuteDots.appendChild(dot);
-    }
+        [minuteHand,minuteHit].forEach(el => {
+          el.setAttribute('x2',minuteEnd.x);
+          el.setAttribute('y2',minuteEnd.y);
+        });
+        [hourHand,hourHit].forEach(el => {
+          el.setAttribute('x2',hourEnd.x);
+          el.setAttribute('y2',hourEnd.y);
+        });
+        minuteGrab.setAttribute('cx',minuteEnd.x);
+        minuteGrab.setAttribute('cy',minuteEnd.y);
+        hourGrab.setAttribute('cx',hourEnd.x);
+        hourGrab.setAttribute('cy',hourEnd.y);
 
-    for(let n=1;n<=12;n++){
-      const p = polarToPoint(n * 30, 137);
-      const t = document.createElementNS('http://www.w3.org/2000/svg','text');
-      t.setAttribute('x', p.x);
-      t.setAttribute('y', p.y + 2);
-      t.setAttribute('class','hour-number');
-      t.textContent = n;
-      numbers.appendChild(t);
-    }
-  }
+        hourHit.setAttribute('aria-valuenow',String(time.hour));
+        hourHit.setAttribute('aria-valuetext',`${time.hour} Uhr`);
+        minuteHit.setAttribute('aria-valuenow',String(time.minute));
+        minuteHit.setAttribute('aria-valuetext',`${time.minute} Minuten`);
 
-  function startDrag(kind, evt){
-    if(kind === 'hour' && !hourToggle.checked) return;
-    if(kind === 'minute' && !minuteToggle.checked) return;
-    dragging = kind;
-    svg.setPointerCapture?.(evt.pointerId);
-    evt.preventDefault();
-  }
+        const hourOff = !hourToggle.checked;
+        const minuteOff = !minuteToggle.checked;
+        [hourHand,hourHit,hourGrab].forEach(el => el.classList.toggle('disabled-hand',hourOff));
+        [minuteHand,minuteHit,minuteGrab].forEach(el => el.classList.toggle('disabled-hand',minuteOff));
+      }
 
-  function handleMove(evt){
-    if(!dragging) return;
-    const deg = angleFromPoint(evt);
+      function render(){updateHands()}
 
-    if(dragging === 'minute'){
-      const rawMinute = Math.round(deg / 6) % 60;
-      time.minute = snapMinute(rawMinute);
-    }
+      function drawFace(){
+        for(let i=0;i<60;i++){
+          const degrees = i * 6;
+          const major = i % 5 === 0;
+          const outer = polarToPoint(degrees,158);
+          const inner = polarToPoint(degrees,major ? 149 : 153);
+          const tick = document.createElementNS('http://www.w3.org/2000/svg','line');
+          tick.setAttribute('x1',inner.x);
+          tick.setAttribute('y1',inner.y);
+          tick.setAttribute('x2',outer.x);
+          tick.setAttribute('y2',outer.y);
+          tick.setAttribute('class',major ? 'minute-tick major' : 'minute-tick');
+          tick.setAttribute('stroke-width',major ? '5' : '3');
+          ticks.appendChild(tick);
+        }
 
-    if(dragging === 'hour'){
-      let hour = Math.round(deg / 30) % 12;
-      time.hour = hour === 0 ? 12 : hour;
-      if(mode === 'full') time.minute = 0;
-    }
+        for(let n=1;n<=12;n++){
+          const point = polarToPoint(n * 30,127);
+          const text = document.createElementNS('http://www.w3.org/2000/svg','text');
+          text.setAttribute('x',point.x);
+          text.setAttribute('y',point.y + 2);
+          text.setAttribute('class','hour-number');
+          text.textContent = n;
+          numbers.appendChild(text);
+        }
+      }
 
-    setRevealed(false);
-    render();
-  }
+      function startDrag(kind,event){
+        if(kind === 'hour' && !hourToggle.checked) return;
+        if(kind === 'minute' && !minuteToggle.checked) return;
+        dragging = kind;
+        svg.setPointerCapture?.(event.pointerId);
+        event.preventDefault();
+        moveDrag(event);
+      }
 
-  function stopDrag(evt){
-    if(!dragging) return;
-    dragging = null;
-    try { svg.releasePointerCapture?.(evt.pointerId); } catch(e) {}
-  }
+      function moveDrag(event){
+        if(!dragging) return;
+        const degrees = pointerAngle(event);
+        if(dragging === 'minute'){
+          time.minute = snapMinute(Math.round(degrees / 6) % 60);
+          hideDigital('Prima! Jetzt kannst du die Uhrzeit im lila Feld prüfen.');
+        }else{
+          const rawHour = Math.round(degrees / 30) % 12;
+          time.hour = rawHour === 0 ? 12 : rawHour;
+          if(mode === 'full') time.minute = 0;
+          hideDigital('Super! Nun kannst du auch den großen blauen Zeiger bewegen.');
+        }
+        render();
+      }
 
-  function randomTime(){
-    time.hour = Math.floor(Math.random() * 12) + 1;
-    const cfg = MODES[mode];
-    if(cfg.minuteChoices){
-      time.minute = cfg.minuteChoices[Math.floor(Math.random() * cfg.minuteChoices.length)];
-    } else {
-      const steps = 60 / cfg.step;
-      time.minute = Math.floor(Math.random() * steps) * cfg.step;
-    }
-    setRevealed(false);
-    render();
-  }
+      function stopDrag(event){
+        if(!dragging) return;
+        dragging = null;
+        try{svg.releasePointerCapture?.(event.pointerId)}catch(error){}
+      }
 
-  function setMode(nextMode){
-    mode = nextMode;
-    time.minute = snapMinute(time.minute);
-    modeButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.mode === mode));
-    modeInfo.textContent = `Modus: ${MODES[mode].label}`;
-    setRevealed(false);
-    render();
-  }
+      function randomTime(){
+        time.hour = Math.floor(Math.random()*12)+1;
+        const config = MODES[mode];
+        if(config.choices){
+          time.minute = config.choices[Math.floor(Math.random()*config.choices.length)];
+        }else{
+          time.minute = Math.floor(Math.random()*(60/config.step))*config.step;
+        }
+        hideDigital('Neue Aufgabe! Welche Uhrzeit zeigt die Uhr?');
+        render();
+      }
 
-  [hourHand, hourGrab].forEach(el => el.addEventListener('pointerdown', evt => startDrag('hour', evt)));
-  [minuteHand, minuteGrab].forEach(el => el.addEventListener('pointerdown', evt => startDrag('minute', evt)));
-  svg.addEventListener('pointermove', handleMove);
-  svg.addEventListener('pointerup', stopDrag);
-  svg.addEventListener('pointercancel', stopDrag);
-  svg.addEventListener('pointerleave', stopDrag);
+      function setMode(nextMode){
+        mode = nextMode;
+        time.minute = snapMinute(time.minute);
+        modeButtons.forEach(button => button.classList.toggle('active',button.dataset.mode === mode));
+        hideDigital(`Übungsstufe „${MODES[mode].label}“ ist eingeschaltet.`);
+        render();
+        showToast(`${MODES[mode].label} eingeschaltet`);
+      }
 
-  hourToggle.addEventListener('change', render);
-  minuteToggle.addEventListener('change', render);
-  randomBtn.addEventListener('click', randomTime);
-  resetBtn.addEventListener('click', () => { time = { hour: 8, minute: 0 }; setRevealed(false); render(); });
-  revealBtn.addEventListener('click', () => setRevealed(!revealed));
-  modeButtons.forEach(btn => btn.addEventListener('click', () => setMode(btn.dataset.mode)));
+      function showToast(message){
+        toast.textContent = message;
+        toast.classList.add('show');
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => toast.classList.remove('show'),1700);
+      }
 
-  fullscreenBtn.addEventListener('click', async () => {
-    const root = document.documentElement;
-    if(!document.fullscreenElement){
-      await root.requestFullscreen?.();
-    }else{
-      await document.exitFullscreen?.();
-    }
-  });
+      function changeByKeyboard(kind,event){
+        const direction = event.key === 'ArrowRight' || event.key === 'ArrowUp' ? 1 : event.key === 'ArrowLeft' || event.key === 'ArrowDown' ? -1 : 0;
+        if(!direction) return;
+        event.preventDefault();
+        if(kind === 'hour'){
+          time.hour = ((time.hour - 1 + direction + 12) % 12) + 1;
+          if(mode === 'full') time.minute = 0;
+        }else{
+          const config = MODES[mode];
+          const step = config.step || (mode === 'quarter' ? 15 : mode === 'half' ? 30 : 60);
+          time.minute = ((time.minute + direction * step) % 60 + 60) % 60;
+        }
+        hideDigital();
+        render();
+      }
 
-  drawClockFace();
-  setMode('full');
-})();
-</script>
+      [hourHit,hourGrab,hourHand].forEach(el => el.addEventListener('pointerdown',event => startDrag('hour',event)));
+      [minuteHit,minuteGrab,minuteHand].forEach(el => el.addEventListener('pointerdown',event => startDrag('minute',event)));
+      svg.addEventListener('pointermove',moveDrag);
+      svg.addEventListener('pointerup',stopDrag);
+      svg.addEventListener('pointercancel',stopDrag);
+      hourHit.addEventListener('keydown',event => changeByKeyboard('hour',event));
+      minuteHit.addEventListener('keydown',event => changeByKeyboard('minute',event));
+
+      digitalCard.addEventListener('click',() => revealed ? hideDigital() : revealDigital());
+      randomBtn.addEventListener('click',randomTime);
+      resetBtn.addEventListener('click',() => {
+        time = {hour:8,minute:0};
+        hideDigital('Wir starten bei 8 Uhr. Bewege einen Zeiger!');
+        render();
+      });
+      modeButtons.forEach(button => button.addEventListener('click',() => setMode(button.dataset.mode)));
+      hourToggle.addEventListener('change',() => {
+        render();
+        showToast(hourToggle.checked ? 'Stundenzeiger eingeblendet' : 'Stundenzeiger ausgeblendet');
+      });
+      minuteToggle.addEventListener('change',() => {
+        render();
+        showToast(minuteToggle.checked ? 'Minutenzeiger eingeblendet' : 'Minutenzeiger ausgeblendet');
+      });
+
+      fullscreenBtn.addEventListener('click',async() => {
+        try{
+          if(!document.fullscreenElement){
+            await document.documentElement.requestFullscreen?.();
+          }else{
+            await document.exitFullscreen?.();
+          }
+        }catch(error){
+          showToast('Vollbild ist auf diesem Gerät nicht verfügbar.');
+        }
+      });
+
+      drawFace();
+      render();
+      hideDigital('Zieh zuerst den kleinen roten Zeiger zur Stunde.');
+    })();
+  </script>
 </body>
 </html>
