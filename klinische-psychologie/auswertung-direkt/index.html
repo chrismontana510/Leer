@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#171a2b">
+  <title>Klinische Psychologie – Quiz mit Lernanalyse</title>
+  <style>
+    :root{--ink:#171a2b;--muted:#686d80;--line:#e3e0f0;--primary:#6558d9;--green:#218c5a;--yellow:#b67c00;--red:#c94c5c;--surface:#fff;--surface2:#f8f7ff}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:#f4f2ff}button{font:inherit;cursor:pointer}.hidden{display:none!important}
+    #appFrame{display:block;width:100%;height:100%;border:0;background:#f4f2ff}.loading{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:radial-gradient(circle at 10% 0%,rgba(101,88,217,.18),transparent 30rem),#f5f3ff}.loading-card{width:min(430px,calc(100% - 32px));padding:30px;border-radius:25px;background:#fff;box-shadow:0 20px 60px rgba(39,34,88,.14);text-align:center}.spinner{width:48px;height:48px;margin:0 auto 18px;border:5px solid #e8e5f4;border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.loading h1{margin:0;font-size:25px}.loading p{color:var(--muted);line-height:1.5}
+    .backdrop{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:16px;background:rgba(18,17,33,.62);backdrop-filter:blur(9px)}.modal{width:min(1080px,100%);max-height:93vh;overflow:auto;border-radius:27px;background:#fff;box-shadow:0 24px 75px rgba(30,25,75,.24)}.modal-head{position:sticky;top:0;z-index:4;display:flex;justify-content:space-between;align-items:center;gap:14px;padding:18px 21px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.96);backdrop-filter:blur(14px)}.modal-head h1{margin:0;font-size:24px}.modal-head p{margin:4px 0 0;color:var(--muted);font-size:13px}.head-actions{display:flex;gap:8px}.btn,.icon-btn{min-height:43px;border:1px solid var(--line);border-radius:13px;background:#fff;color:var(--ink);padding:0 14px;font-weight:850}.icon-btn{width:43px;padding:0;font-size:20px}.btn:disabled{opacity:.5;cursor:not-allowed}.modal-body{padding:21px}.status-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:17px}.status{display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border-radius:999px;font-size:13px;font-weight:850;background:#f3f1fb;color:var(--muted)}.dot{width:9px;height:9px;border-radius:50%;background:#aaa}.status.online{background:#e9f8f0;color:#176a45}.status.online .dot{background:var(--green)}.status.offline{background:#fff2df;color:#8a5d00}.status.offline .dot{background:#e0a52b}.pending{color:var(--muted);font-size:13px;font-weight:750}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:20px}.stat{padding:17px;border:1px solid var(--line);border-radius:18px;background:var(--surface2)}.stat strong{display:block;font-size:29px}.stat span{display:block;margin-top:4px;color:var(--muted);font-size:12px;font-weight:800}.section{margin-top:22px}.section h2{margin:0 0 4px;font-size:21px}.section-note{margin:0 0 11px;color:var(--muted);font-size:13px}.area-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.area{padding:15px;border:1px solid var(--line);border-radius:17px;background:#fff}.area-top{display:flex;justify-content:space-between;gap:10px;font-weight:900}.area small{display:block;color:var(--muted);margin-top:5px}.bar{height:9px;margin-top:12px;border-radius:999px;background:#ece9f6;overflow:hidden}.bar span{display:block;height:100%;border-radius:inherit;background:var(--primary)}.area.weak{border-color:#efbdc4;background:#fff7f8}.area.weak .bar span{background:var(--red)}.area.medium{border-color:#eedba5;background:#fffdf5}.area.medium .bar span{background:#d69a17}.area.strong{border-color:#b9dfca;background:#f6fdf9}.area.strong .bar span{background:var(--green)}.recommendations{display:grid;gap:8px}.recommendation{display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:center;padding:13px 14px;border:1px solid #efc2c8;border-radius:16px;background:#fff7f8}.recommendation .icon{width:37px;height:37px;display:grid;place-items:center;border-radius:12px;background:#ffe7ea}.recommendation strong{display:block;font-size:14px}.recommendation p{margin:3px 0 0;color:var(--muted);font-size:12px}.rate{font-weight:950;color:var(--red);white-space:nowrap}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:17px}.table{width:100%;border-collapse:collapse;min-width:720px}.table th,.table td{text-align:left;padding:12px 13px;border-bottom:1px solid var(--line);font-size:13px}.table th{background:#f8f7ff;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em}.table tr:last-child td{border-bottom:0}.question-cell{max-width:460px;font-weight:750;line-height:1.4}.pill{display:inline-block;margin-top:5px;padding:5px 8px;border-radius:999px;background:#f0eef9;color:#554b9d;font-size:11px;font-weight:850}.rate-good{color:var(--green);font-weight:900}.rate-mid{color:var(--yellow);font-weight:900}.rate-bad{color:var(--red);font-weight:900}.empty{padding:34px 18px;border:2px dashed var(--line);border-radius:18px;text-align:center;color:var(--muted);line-height:1.55}.error{padding:12px 14px;border-radius:14px;background:#fff0f2;border:1px solid #edbcc3;color:#8f2d3a;font-size:13px;line-height:1.45}
+    @media(max-width:820px){.summary{grid-template-columns:repeat(2,1fr)}.area-grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.backdrop{padding:7px}.modal{max-height:97vh;border-radius:19px}.modal-head{padding:13px 14px}.modal-body{padding:14px}.modal-head h1{font-size:20px}.summary,.area-grid{grid-template-columns:1fr}.head-actions .btn span{display:none}.recommendation{grid-template-columns:auto 1fr}.recommendation .rate{grid-column:2}}
+  </style>
+</head>
+<body>
+  <iframe id="appFrame" src="../index.html" title="Klinische Psychologie Lernquiz"></iframe>
+  <div class="loading" id="loading"><div class="loading-card"><div class="spinner"></div><h1>Quiz mit Lernanalyse</h1><p>Das Quiz und die Supabase-Auswertung werden vorbereitet.</p></div></div>
+
+  <div class="backdrop hidden" id="analyticsModal">
+    <div class="modal">
+      <header class="modal-head">
+        <div><h1>📊 Lernanalyse</h1><p>Erfolgsquoten pro Frage und Hinweise für die nächste Lernrunde</p></div>
+        <div class="head-actions"><button class="btn" id="refreshBtn">↻ <span>Aktualisieren</span></button><button class="icon-btn" id="closeBtn" aria-label="Schließen">×</button></div>
+      </header>
+      <div class="modal-body">
+        <div class="status-row"><div class="status offline" id="connectionStatus"><span class="dot"></span><span>Verbindung wird geprüft</span></div><div class="pending" id="pendingText">0 ausstehende Versuche</div></div>
+        <div id="analyticsError" class="error hidden"></div>
+        <div id="analyticsContent" class="hidden">
+          <div class="summary">
+            <div class="stat"><strong id="overallRate">–</strong><span>Gesamterfolgsquote</span></div>
+            <div class="stat"><strong id="totalAttempts">0</strong><span>beantwortete Aufgaben</span></div>
+            <div class="stat"><strong id="trackedQuestions">0</strong><span>erfasste Fragen</span></div>
+            <div class="stat"><strong id="weakCount">0</strong><span>konkrete Lernfelder</span></div>
+          </div>
+          <section class="section"><h2>Bereiche</h2><p class="section-note">Unter 70 % wird ein Bereich als Lernfeld markiert.</p><div class="area-grid" id="areaGrid"></div></section>
+          <section class="section"><h2>Das solltest du noch lernen</h2><p class="section-note">Fragen mit mindestens drei Versuchen und niedriger Erfolgsquote.</p><div class="recommendations" id="recommendations"></div></section>
+          <section class="section"><h2>Erfolgsquote pro Frage</h2><p class="section-note">Neue eigene Fragen erscheinen automatisch nach dem ersten Versuch.</p><div class="table-wrap"><table class="table"><thead><tr><th>Frage</th><th>Bereich</th><th>Versuche</th><th>Richtig</th><th>Quote</th></tr></thead><tbody id="questionTable"></tbody></table></div></section>
+        </div>
+        <div id="noData" class="empty hidden">Noch keine Daten vorhanden. Beantworte einige Fragen im Quiz. Nach dem ersten Versuch erscheint die jeweilige Frage automatisch hier.</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const SUPABASE_URL='https://uvkjltedlswfzncgadoh.supabase.co/rest/v1';
+const SUPABASE_KEY='sb_publishable_Fo2Z7DMXx1QtmZ-3LaIpLw_-MJSckVo';
+const QUEUE_KEY='klinpsych_supabase_queue_v2';
+const TOPIC_LABELS={basics:'Grundlagen & Diagnostik',icd:'ICD-10 F-Kapitel',custom:'Eigene Fragen'};
+const TYPE_LABELS={single:'Multiple Choice',multi:'Mehrfachauswahl',text:'Lückentext',open:'Offene Antwort',match:'Zuordnung',sort:'Sortierung'};
+const appFrame=document.getElementById('appFrame');
+let patchedCore=null;
+
+function esc(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function getQueue(){try{const q=JSON.parse(localStorage.getItem(QUEUE_KEY));return Array.isArray(q)?q:[]}catch{return[]}}
+function setQueue(queue){localStorage.setItem(QUEUE_KEY,JSON.stringify(queue));renderPending()}
+function createId(){return crypto.randomUUID?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0,v=c==='x'?r:(r&3|8);return v.toString(16)})}
+function renderPending(){const n=getQueue().length;document.getElementById('pendingText').textContent=`${n} ausstehende${n===1?'r Versuch':' Versuche'}`}
+function apiHeaders(){return{'Content-Type':'application/json','apikey':SUPABASE_KEY}}
+async function rpc(name,body){const response=await fetch(`${SUPABASE_URL}/rpc/${name}`,{method:'POST',headers:apiHeaders(),body:JSON.stringify(body)});const text=await response.text();let data=null;if(text){try{data=JSON.parse(text)}catch{data=text}}if(!response.ok)throw new Error(data?.message||data?.hint||data?.details||String(data||response.statusText));return data}
+
+function enqueueAttempt(payload){const queue=getQueue();queue.push({attemptId:createId(),...payload,queuedAt:new Date().toISOString()});setQueue(queue);flushQueue()}
+async function flushQueue(){const queue=getQueue();if(!queue.length)return true;const remaining=[];for(const item of queue){try{await rpc('record_quiz_attempt',{p_attempt_id:item.attemptId,p_question_id:String(item.questionId),p_question_text:String(item.questionText).slice(0,1000),p_topic:String(item.topic||'Unbekannt'),p_question_type:String(item.questionType||'Unbekannt'),p_is_correct:Boolean(item.isCorrect)})}catch(error){console.warn('Versuch konnte nicht gesendet werden:',error);remaining.push(item)}}setQueue(remaining);return remaining.length===0}
+
+window.addEventListener('message',event=>{const data=event.data;if(data?.source==='klinpsych-supabase-tracker'&&data.type==='attempt')enqueueAttempt(data.payload)});
+function findCore(){try{const wrapperDoc=appFrame.contentDocument;const inner=wrapperDoc?.getElementById('quizFrame');const coreDoc=inner?.contentDocument;const coreWin=inner?.contentWindow;if(coreDoc?.querySelector('.top-actions')&&coreWin)return{doc:coreDoc,win:coreWin}}catch{}return null}
+function patchQuiz(){const core=findCore();if(!core){setTimeout(patchQuiz,250);return}if(patchedCore===core.win){setTimeout(patchQuiz,1000);return}patchedCore=core.win;const actions=core.doc.querySelector('.top-actions');if(actions&&!core.doc.getElementById('analyticsButton')){const button=core.doc.createElement('button');button.id='analyticsButton';button.className='ghost-btn';button.type='button';button.innerHTML='📊 <span class="wide">Lernanalyse</span>';button.addEventListener('click',openAnalytics);actions.prepend(button)}try{core.win.eval(`if(!window.__supabaseRecordPatch){const __baseRecord=record;record=function(q,ok){__baseRecord(q,ok);window.top.postMessage({source:'klinpsych-supabase-tracker',type:'attempt',payload:{questionId:q.id,questionText:q.question,topic:q.topic,questionType:q.type,isCorrect:!!ok}},'*')};window.__supabaseRecordPatch=true;}`)}catch(error){console.error('Tracking konnte nicht aktiviert werden:',error)}document.getElementById('loading').classList.add('hidden');setTimeout(patchQuiz,1000)}
+appFrame.addEventListener('load',()=>setTimeout(patchQuiz,150));patchQuiz();
+
+function setConnection(online,message){const el=document.getElementById('connectionStatus');el.className=`status ${online?'online':'offline'}`;el.innerHTML=`<span class="dot"></span><span>${esc(message|| (online?'Mit Supabase verbunden':'Verbindung fehlgeschlagen'))}</span>`}
+function showError(message){const el=document.getElementById('analyticsError');el.textContent=message;el.classList.remove('hidden')}
+function clearError(){document.getElementById('analyticsError').classList.add('hidden')}
+function openAnalytics(){document.getElementById('analyticsModal').classList.remove('hidden');renderPending();loadAnalytics()}
+function closeAnalytics(){document.getElementById('analyticsModal').classList.add('hidden')}
+async function loadAnalytics(){clearError();document.getElementById('refreshBtn').disabled=true;try{await flushQueue();const data=await rpc('get_quiz_analytics',{p_limit:300});setConnection(true);renderAnalytics(data)}catch(error){setConnection(false);showError(`Supabase meldet: ${error.message}. Lade die Seite einmal neu. Falls der Fehler bleibt, prüfe im Supabase SQL Editor, ob das Query vollständig ausgeführt wurde.`);document.getElementById('analyticsContent').classList.add('hidden');document.getElementById('noData').classList.add('hidden')}finally{document.getElementById('refreshBtn').disabled=false}}
+function topicLabel(value){return TOPIC_LABELS[value]||value||'Unbekannt'}
+function typeLabel(value){return TYPE_LABELS[value]||value||'Unbekannt'}
+function rateClass(rate){return rate<70?'rate-bad':rate<85?'rate-mid':'rate-good'}
+function areaClass(rate,attempts){if(attempts<3)return'';return rate<70?'weak':rate<85?'medium':'strong'}
+function renderAnalytics(data){const totals=data?.totals||{};const topics=Array.isArray(data?.topics)?data.topics:[];const questions=Array.isArray(data?.questions)?data.questions:[];const hasData=Number(totals.attempts||0)>0;document.getElementById('analyticsContent').classList.toggle('hidden',!hasData);document.getElementById('noData').classList.toggle('hidden',hasData);if(!hasData)return;const weak=questions.filter(q=>Number(q.attempts)>=3&&Number(q.success_rate)<70);document.getElementById('overallRate').textContent=totals.success_rate==null?'–':`${totals.success_rate}%`;document.getElementById('totalAttempts').textContent=Number(totals.attempts||0).toLocaleString('de-DE');document.getElementById('trackedQuestions').textContent=Number(totals.question_count||questions.length);document.getElementById('weakCount').textContent=weak.length;
+  document.getElementById('areaGrid').innerHTML=topics.length?topics.map(t=>{const rate=Number(t.success_rate||0),attempts=Number(t.attempts||0);return`<article class="area ${areaClass(rate,attempts)}"><div class="area-top"><span>${esc(topicLabel(t.topic))}</span><span>${rate}%</span></div><small>${attempts} Versuche · ${t.question_count} Fragen</small><div class="bar"><span style="width:${Math.max(0,Math.min(rate,100))}%"></span></div></article>`}).join(''):'<div class="empty">Noch keine Bereichsdaten.</div>';
+  document.getElementById('recommendations').innerHTML=weak.length?weak.slice(0,8).map(q=>`<article class="recommendation"><div class="icon">↻</div><div><strong>${esc(q.question_text)}</strong><p>${esc(topicLabel(q.topic))} · ${q.correct_attempts} von ${q.attempts} richtig</p></div><div class="rate">${q.success_rate}%</div></article>`).join(''):'<div class="empty">Aktuell liegt keine Frage mit mindestens drei Versuchen unter 70 %. Stark!</div>';
+  document.getElementById('questionTable').innerHTML=questions.map(q=>`<tr><td class="question-cell">${esc(q.question_text)}<br><span class="pill">${esc(typeLabel(q.question_type))}</span></td><td>${esc(topicLabel(q.topic))}</td><td>${q.attempts}</td><td>${q.correct_attempts}</td><td class="${rateClass(Number(q.success_rate||0))}">${q.success_rate}%</td></tr>`).join('');
+}
+
+document.getElementById('closeBtn').addEventListener('click',closeAnalytics);
+document.getElementById('analyticsModal').addEventListener('click',event=>{if(event.target===document.getElementById('analyticsModal'))closeAnalytics()});
+document.getElementById('refreshBtn').addEventListener('click',loadAnalytics);
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!document.getElementById('analyticsModal').classList.contains('hidden'))closeAnalytics()});
+renderPending();flushQueue();
+</script>
+</body>
+</html>
