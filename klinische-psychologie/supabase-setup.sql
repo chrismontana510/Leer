@@ -14,12 +14,21 @@ create table if not exists public.quiz_question_stats (
     check (correct_attempts <= attempts)
 );
 
-alter table public.quiz_question_stats enable row level security;
+create table if not exists public.quiz_processed_attempts (
+  attempt_id uuid primary key,
+  processed_at timestamptz not null default now()
+);
 
--- No direct table access from the public browser client.
+alter table public.quiz_question_stats enable row level security;
+alter table public.quiz_processed_attempts enable row level security;
+
+-- The browser can only call the two RPC functions below. It cannot query or
+-- modify the underlying tables directly.
 revoke all on table public.quiz_question_stats from anon, authenticated;
+revoke all on table public.quiz_processed_attempts from anon, authenticated;
 
 create or replace function public.record_quiz_attempt(
+  p_attempt_id uuid,
   p_question_id text,
   p_question_text text,
   p_topic text,
@@ -34,12 +43,37 @@ as $$
 declare
   v_row public.quiz_question_stats;
 begin
+  if p_attempt_id is null then
+    raise exception 'Missing attempt id';
+  end if;
+
   if p_question_id is null or length(trim(p_question_id)) = 0 or length(p_question_id) > 180 then
     raise exception 'Invalid question id';
   end if;
 
   if p_question_text is null or length(trim(p_question_text)) = 0 or length(p_question_text) > 1000 then
     raise exception 'Invalid question text';
+  end if;
+
+  insert into public.quiz_processed_attempts (attempt_id)
+  values (p_attempt_id)
+  on conflict (attempt_id) do nothing;
+
+  if not found then
+    select * into v_row
+    from public.quiz_question_stats
+    where question_id = trim(p_question_id);
+
+    return jsonb_build_object(
+      'duplicate', true,
+      'question_id', trim(p_question_id),
+      'attempts', coalesce(v_row.attempts, 0),
+      'correct_attempts', coalesce(v_row.correct_attempts, 0),
+      'success_rate', case
+        when coalesce(v_row.attempts, 0) = 0 then null
+        else round((v_row.correct_attempts::numeric / v_row.attempts) * 100, 1)
+      end
+    );
   end if;
 
   insert into public.quiz_question_stats (
@@ -74,6 +108,7 @@ begin
   returning * into v_row;
 
   return jsonb_build_object(
+    'duplicate', false,
     'question_id', v_row.question_id,
     'attempts', v_row.attempts,
     'correct_attempts', v_row.correct_attempts,
@@ -135,11 +170,14 @@ as $$
   );
 $$;
 
-revoke execute on function public.record_quiz_attempt(text, text, text, text, boolean) from public;
+revoke execute on function public.record_quiz_attempt(uuid, text, text, text, text, boolean) from public;
 revoke execute on function public.get_quiz_analytics(integer) from public;
 
-grant execute on function public.record_quiz_attempt(text, text, text, text, boolean) to anon, authenticated;
+grant execute on function public.record_quiz_attempt(uuid, text, text, text, text, boolean) to anon, authenticated;
 grant execute on function public.get_quiz_analytics(integer) to anon, authenticated;
 
 comment on table public.quiz_question_stats is
   'Aggregated anonymous quiz statistics. Stores no names, email addresses or free-text learner responses.';
+
+comment on table public.quiz_processed_attempts is
+  'Deduplication table for safely retrying queued quiz attempts.';
